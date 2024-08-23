@@ -2,6 +2,12 @@ const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 const restartButton = document.getElementById('restartButton');
 
+// Dimensiuni inițiale ale canvas-ului
+const initialWidth = 800;
+const initialHeight = 600;
+canvas.width = initialWidth;
+canvas.height = initialHeight;
+
 // Încărcarea imaginilor
 const playerImage = new Image();
 playerImage.src = 'img/laur.jpg'; // Imaginea pentru jucător
@@ -18,6 +24,17 @@ let obstacleSpeed = 3;
 let score;
 let gameInterval;
 let gameOverFlag = false;
+
+// Ajustează dimensiunile canvas-ului la dimensiunea ferestrei
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    // Realiniază jucătorul după redimensionare
+    playerX = canvas.width / 2 - playerSize / 2;
+    playerY = canvas.height - playerSize - 10;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas(); // Apel inițial pentru a seta dimensiunile corecte
 
 // Inițializează jocul
 function initGame() {

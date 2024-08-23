@@ -14,17 +14,22 @@
             align-items: center;
             height: 100vh;
             background-color: #f0f0f0;
+            overflow: hidden;
+            /* Ascunde orice scroll care apare */
         }
 
         canvas {
             border: 1px solid #000;
+            max-width: 100%;
+            max-height: 100%;
         }
 
         #restartButton {
             display: none;
             position: absolute;
-            top: 20px;
-            right: 20px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             padding: 10px 20px;
             font-size: 16px;
             background-color: #4CAF50;
@@ -41,7 +46,7 @@
 </head>
 
 <body>
-    <canvas id="gameCanvas" width="800" height="600"></canvas>
+    <canvas id="gameCanvas"></canvas>
     <button id="restartButton">Restart Game</button>
     <script src="game.js"></script>
 </body>
