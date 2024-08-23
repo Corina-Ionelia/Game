@@ -15,13 +15,14 @@
             height: 100vh;
             background-color: #f0f0f0;
             overflow: hidden;
-            /* Ascunde orice scroll care apare */
+            /* Ascunde scroll-ul */
         }
 
         canvas {
             border: 1px solid #000;
-            max-width: 100%;
-            max-height: 100%;
+            background: linear-gradient(to right, lightblue, purple);
+            /* Fundal dinamic */
+            display: block;
         }
 
         #restartButton {
@@ -42,11 +43,54 @@
         #restartButton:hover {
             background-color: #45a049;
         }
+
+        .control-button {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 24px;
+            text-align: center;
+            line-height: 80px;
+            z-index: 1000;
+            /* Asigură-te că butoanele sunt deasupra altor elemente */
+        }
+
+        #leftButton {
+            left: 20px;
+            bottom: 20px;
+        }
+
+        #rightButton {
+            right: 20px;
+            bottom: 20px;
+        }
+
+        @media (max-width: 600px) {
+
+            #leftButton,
+            #rightButton {
+                width: 60px;
+                height: 60px;
+                font-size: 18px;
+            }
+
+            #restartButton {
+                padding: 8px 16px;
+                font-size: 14px;
+            }
+        }
     </style>
 </head>
 
 <body>
     <canvas id="gameCanvas"></canvas>
+    <button id="leftButton" class="control-button">←</button>
+    <button id="rightButton" class="control-button">→</button>
     <button id="restartButton">Restart Game</button>
     <script src="game.js"></script>
 </body>

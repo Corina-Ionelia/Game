@@ -1,12 +1,18 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 const restartButton = document.getElementById('restartButton');
+const leftButton = document.getElementById('leftButton');
+const rightButton = document.getElementById('rightButton');
 
 // Dimensiuni inițiale ale canvas-ului
-const initialWidth = 800;
-const initialHeight = 600;
-canvas.width = initialWidth;
-canvas.height = initialHeight;
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    playerX = canvas.width / 2 - playerSize / 2;
+    playerY = canvas.height - playerSize - 10;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas(); // Apel inițial pentru a seta dimensiunile corecte
 
 // Încărcarea imaginilor
 const playerImage = new Image();
@@ -16,7 +22,7 @@ const obstacleImage = new Image();
 obstacleImage.src = 'img/corina.jpg'; // Imaginea pentru obstacole
 
 const playerSize = 50; // Dimensiunea jucătorului
-const obstacleRadius = 20; // Raza obstacolului rotund
+const obstacleRadius = 30; // Raza obstacolului rotund (ajustabilă în funcție de imagine)
 const playerSpeed = 5;
 let playerX, playerY;
 let obstacles = [];
@@ -24,17 +30,6 @@ let obstacleSpeed = 3;
 let score;
 let gameInterval;
 let gameOverFlag = false;
-
-// Ajustează dimensiunile canvas-ului la dimensiunea ferestrei
-function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    // Realiniază jucătorul după redimensionare
-    playerX = canvas.width / 2 - playerSize / 2;
-    playerY = canvas.height - playerSize - 10;
-}
-window.addEventListener('resize', resizeCanvas);
-resizeCanvas(); // Apel inițial pentru a seta dimensiunile corecte
 
 // Inițializează jocul
 function initGame() {
@@ -109,15 +104,19 @@ function update() {
 }
 
 // Controlul jucătorului
-document.addEventListener('keydown', (event) => {
-    if (event.key === 'ArrowLeft') {
+function movePlayer(direction) {
+    if (direction === 'left') {
         playerX -= playerSpeed;
         if (playerX < 0) playerX = 0;
-    } else if (event.key === 'ArrowRight') {
+    } else if (direction === 'right') {
         playerX += playerSpeed;
         if (playerX + playerSize > canvas.width) playerX = canvas.width - playerSize;
     }
-});
+}
+
+// Evenimente pentru butoanele de control
+leftButton.addEventListener('click', () => movePlayer('left'));
+rightButton.addEventListener('click', () => movePlayer('right'));
 
 // Funcția de finalizare a jocului
 function gameOver() {
@@ -132,10 +131,7 @@ function gameOver() {
     ctx.font = '20px Arial';
     ctx.fillText('Score: ' + score, canvas.width / 2, canvas.height / 2 + 20);
     restartButton.style.display = 'block'; // Arată butonul de restart în centrul jocului
-    restartButton.style.position = 'absolute'; // Asigură-te că butonul este poziționat absolut
-    restartButton.style.top = '50%'; // Center în verticală
-    restartButton.style.left = '50%'; // Center în orizontală
-    restartButton.style.transform = 'translate(-50%, -50%)'; // Center pe baza punctului de mijloc
+    restartButton.style.position = 'absolute'; // Asigură-te că butonul este în centrul ecranului
 }
 
 // Funcția de restart
