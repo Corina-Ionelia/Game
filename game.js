@@ -110,7 +110,7 @@ function update() {
     }
 
     // Adaugă un nou obstacol din când în când
-    if (Math.random() < 0.02) {
+    if (Math.random() < 0.01) {
         addObstacle();
     }
 
@@ -131,12 +131,11 @@ function gameOver() {
     ctx.drawImage(gameOverImage, 0, 0, canvas.width, canvas.height); // Desenează imaginea pentru întregul canvas
 
     // Opțional: Desenează textul de Game Over peste imagine
-    ctx.fillStyle = 'white';
-    ctx.font = '48px Arial';
-    ctx.textAlign = 'center';
-    ctx.fillText('Game Over', canvas.width / 2, canvas.height / 2 - 20);
-    ctx.font = '24px Arial';
-    ctx.fillText('Score: ' + score, canvas.width / 2, canvas.height / 2 + 30);
+    ctx.fillStyle = 'black';
+    ctx.font = 'italic bold 25px Arial';
+    ctx.textAlign = 'center'; // Centrează textul pe axa X
+    ctx.textBaseline = 'top'; // Aliniază textul de la marginea de sus pe axa Y
+    ctx.fillText('Score: ' + score, canvas.width / 2, canvas.height / 2 + 100);
 
 }
 
