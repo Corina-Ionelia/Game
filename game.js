@@ -22,12 +22,18 @@ const obstacleRadius = 20; // Raza obstacolului rotund
 let playerSpeed = 5;
 const normalSpeed = 5; // Viteza normală
 const boostedSpeed = 10; // Viteza crescută când butonul este apăsat
+const stepSpeed = 2; // Viteza pentru mișcare scurtă
 let playerX, playerY;
 let obstacles = [];
 let obstacleSpeed = 3;
 let score;
 let gameInterval;
 let gameOverFlag = false;
+
+// Cronometre pentru gestionarea butoanelor
+let leftButtonPressedTime = 0;
+let rightButtonPressedTime = 0;
+const longPressDuration = 500; // Durata necesară pentru a considera apăsare lungă (în milisecunde)
 
 // Ajustează dimensiunile canvas-ului la dimensiunea ferestrei
 function resizeCanvas() {
@@ -123,32 +129,51 @@ document.addEventListener('keydown', (event) => {
     }
 });
 
-// Control pentru butoanele pe mobil
-leftButton.addEventListener('touchstart', () => {
-    playerSpeed = boostedSpeed;
-    movePlayerLeft();
-});
-
-rightButton.addEventListener('touchstart', () => {
-    playerSpeed = boostedSpeed;
-    movePlayerRight();
-});
-
-// Muta jucătorul la stânga
+// Funcții de mișcare pe mobil
 function movePlayerLeft() {
     if (playerX > 0) {
         playerX -= playerSpeed;
     }
 }
 
-// Muta jucătorul la dreapta
 function movePlayerRight() {
     if (playerX + playerSize < canvas.width) {
         playerX += playerSpeed;
     }
 }
 
-// Resetează viteza jucătorului când butonul este eliberat
+// Gestionarea apăsărilor lungi și scurte
+leftButton.addEventListener('touchstart', (event) => {
+    leftButtonPressedTime = Date.now();
+    playerSpeed = boostedSpeed;
+    movePlayerLeft();
+});
+
+rightButton.addEventListener('touchstart', (event) => {
+    rightButtonPressedTime = Date.now();
+    playerSpeed = boostedSpeed;
+    movePlayerRight();
+});
+
+leftButton.addEventListener('touchend', (event) => {
+    if (Date.now() - leftButtonPressedTime < longPressDuration) {
+        playerSpeed = stepSpeed; // Mișcare scurtă dacă apăsarea este scurtă
+        movePlayerLeft();
+    } else {
+        playerSpeed = normalSpeed; // Mișcare normală dacă apăsarea este lungă
+    }
+});
+
+rightButton.addEventListener('touchend', (event) => {
+    if (Date.now() - rightButtonPressedTime < longPressDuration) {
+        playerSpeed = stepSpeed; // Mișcare scurtă dacă apăsarea este scurtă
+        movePlayerRight();
+    } else {
+        playerSpeed = normalSpeed; // Mișcare normală dacă apăsarea este lungă
+    }
+});
+
+// Resetează viteza jucătorului când butonul este eliberat pe mobil
 document.addEventListener('touchend', () => {
     playerSpeed = normalSpeed; // Revine la viteza normală când butonul este eliberat pe mobil
 });
