@@ -20,7 +20,7 @@ obstacleImage.src = 'img/corina.jpg'; // Imaginea pentru obstacole
 const playerSize = 70; // Dimensiunea jucătorului
 const obstacleRadius = 25; // Raza obstacolului rotund
 let playerSpeed = 5;
-const normalSpeed = 100; // Viteza normală
+const normalSpeed = 50; // Viteza normală
 const boostedSpeed = 500; // Viteza crescută când butonul este apăsat
 let playerX, playerY;
 let obstacles = [];
@@ -71,8 +71,8 @@ function update() {
 
     // Desenează fundalul dinamic
     const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-    gradient.addColorStop(0, 'lightblue');
-    gradient.addColorStop(1, 'purple');
+    gradient.addColorStop(0, 'aqua');
+    gradient.addColorStop(1, 'peru');
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
