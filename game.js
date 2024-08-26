@@ -17,21 +17,21 @@ playerImage.src = 'img/laur.jpg'; // Imaginea pentru jucător
 const obstacleImage = new Image();
 obstacleImage.src = 'img/corina.jpg'; // Imaginea pentru obstacole
 
-const playerSize = 50; // Dimensiunea jucătorului
-const obstacleRadius = 20; // Raza obstacolului rotund
+const playerSize = 70; // Dimensiunea jucătorului
+const obstacleRadius = 25; // Raza obstacolului rotund
 let playerSpeed = 5;
-const normalSpeed = 5; // Viteza normală
-const boostedSpeed = 10; // Viteza crescută când butonul este apăsat
+const normalSpeed = 100; // Viteza normală
+const boostedSpeed = 500; // Viteza crescută când butonul este apăsat
 let playerX, playerY;
 let obstacles = [];
-let obstacleSpeed = 3;
+let obstacleSpeed = 30;
 let score;
 let gameInterval;
 let gameOverFlag = false;
 
 // Variabile pentru gestionarea duratei apăsării butonului
 let pressStartTime = 0;
-const longPressThreshold = 500; // Durata în milisecunde pentru a considera apăsarea ca fiind lungă
+const longPressThreshold = 700; // Durata în milisecunde pentru a considera apăsarea ca fiind lungă
 
 // Ajustează dimensiunile canvas-ului la dimensiunea ferestrei
 function resizeCanvas() {
@@ -145,7 +145,7 @@ function onButtonPress(e, direction) {
             // Mișcare normală
             movePlayer(direction);
         }
-    }, 100); // Verifică mișcarea la fiecare 100ms
+    }, 100); // Verifică mișcarea la fiecare 1ms
 
     const endPress = () => {
         clearInterval(moveInterval);
