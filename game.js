@@ -105,51 +105,48 @@ function update() {
         }
     }
 
+    // Adaugă un nou obstacol din când în când
     if (Math.random() < 0.02) {
         addObstacle();
     }
 
-    // Asigură-te că textul pentru scor este bine poziționat și vizibil pe toate dispozitivele
-    ctx.fillStyle = 'black';
-    ctx.font = 'bold 20px Arial'; // Ajustează dimensiunea fontului
-    ctx.textAlign = 'left'; // Poziționează textul la stânga
-    ctx.fillText('Score: ' + score, 20, 40); // Ajustează poziția și marginea scorului
-
-    // Alternativ, pentru a fi mai vizibil pe toate dispozitivele
-    ctx.font = `${Math.max(16, Math.min(canvas.width / 50, 24))}px Arial`; // Scorul se ajustează proporțional cu dimensiunea ecranului
+    // Desenează scorul
+    ctx.fillStyle = 'white';
+    ctx.font = '24px Arial';
+    ctx.fillText('Score: ' + score, 10, 30);
 }
 
-// Controlul jucătorului
-document.addEventListener('keydown', (event) => {
-    if (event.key === 'ArrowLeft') {
+// Funcția de terminare a jocului
+function gameOver() {
+    clearInterval(gameInterval);
+    gameOverFlag = true;
+    restartButton.style.display = 'block'; // Afișează butonul de restart
+}
+
+// Mișcare jucător la apăsarea butoanelor
+function movePlayer(direction) {
+    if (direction === 'left') {
         playerX -= playerSpeed;
         if (playerX < 0) playerX = 0;
-    } else if (event.key === 'ArrowRight') {
+    } else if (direction === 'right') {
         playerX += playerSpeed;
         if (playerX + playerSize > canvas.width) playerX = canvas.width - playerSize;
     }
-});
+}
 
-// Control pentru butoanele pe mobil
 function onButtonPress(e, direction) {
+    e.preventDefault(); // Previne acțiuni implicite
     pressStartTime = Date.now(); // Înregistrează momentul în care butonul a fost apăsat
     const moveInterval = setInterval(() => {
         if (Date.now() - pressStartTime >= longPressThreshold) {
-            // Dacă timpul apăsării este mai mare decât threshold-ul, mișcare rapidă
+            // Mișcare continuă cu viteză mare
             playerSpeed = boostedSpeed;
         } else {
-            // Mișcare scurtă pentru apăsări scurte
-            if (direction === 'left') {
-                playerX -= playerSpeed;
-                if (playerX < 0) playerX = 0;
-            } else if (direction === 'right') {
-                playerX += playerSpeed;
-                if (playerX + playerSize > canvas.width) playerX = canvas.width - playerSize;
-            }
+            // Mișcare normală
+            movePlayer(direction);
         }
     }, 100); // Verifică mișcarea la fiecare 100ms
 
-    // Oprește intervalul atunci când butonul este eliberat
     const endPress = () => {
         clearInterval(moveInterval);
         playerSpeed = normalSpeed; // Revine la viteza normală
@@ -163,37 +160,15 @@ function onButtonPress(e, direction) {
 leftButton.addEventListener('mousedown', (e) => onButtonPress(e, 'left'));
 rightButton.addEventListener('mousedown', (e) => onButtonPress(e, 'right'));
 
-document.addEventListener('mouseup', () => playerSpeed = normalSpeed); // Revine la viteza normală când butonul este eliberat
-document.addEventListener('touchend', () => playerSpeed = normalSpeed); // Revine la viteza normală când butonul este eliberat pe mobil
+// Pentru dispozitive mobile, folosim touchstart în loc de mousedown
+leftButton.addEventListener('touchstart', (e) => onButtonPress(e, 'left'));
+rightButton.addEventListener('touchstart', (e) => onButtonPress(e, 'right'));
 
-// Funcția de finalizare a jocului
-function gameOver() {
-    clearInterval(gameInterval); // Opriți actualizarea jocului
-    gameOverFlag = true;
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.8)'; // Culoare de fundal întunecată pentru ecranul de game over
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = 'white';
-    ctx.font = '40px Arial';
-    ctx.textAlign = 'center';
-    ctx.fillText('Game Over!', canvas.width / 2, canvas.height / 2 - 20);
-    ctx.font = '20px Arial';
-    ctx.fillText('Score: ' + score, canvas.width / 2, canvas.height / 2 + 20);
-    restartButton.style.display = 'block'; // Arată butonul de restart în centrul jocului
-    restartButton.style.position = 'absolute'; // Asigură-te că butonul este poziționat absolut
-    restartButton.style.top = '50%'; // Center în verticală
-    restartButton.style.left = '50%'; // Center în orizontală
-    restartButton.style.transform = 'translate(-50%, -50%)'; // Center pe baza punctului de mijloc
-}
-
-// Funcția de restart
-function restartGame() {
+restartButton.addEventListener('click', () => {
     initGame();
     gameInterval = setInterval(update, 1000 / 60); // Repornește actualizarea jocului
-}
+});
 
-// Adaugă event listener la butonul de restart
-restartButton.addEventListener('click', restartGame);
-
-// Inițializează jocul și începe actualizarea
+// Începe jocul
 initGame();
-gameInterval = setInterval(update, 1000 / 60); // Actualizare joc la 60 FPS
+gameInterval = setInterval(update, 1000 / 60);
