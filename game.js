@@ -19,7 +19,9 @@ obstacleImage.src = 'img/corina.jpg'; // Imaginea pentru obstacole
 
 const playerSize = 50; // Dimensiunea jucătorului
 const obstacleRadius = 20; // Raza obstacolului rotund
-const playerSpeed = 5;
+let playerSpeed = 5;
+const normalSpeed = 5; // Viteza normală
+const boostedSpeed = 10; // Viteza crescută când butonul este apăsat
 let playerX, playerY;
 let obstacles = [];
 let obstacleSpeed = 3;
@@ -103,11 +105,11 @@ function update() {
         addObstacle();
     }
 
-    // Asigură-te că textul pentru scor este bine poziționat și vizibil
+    // Asigură-te că textul pentru scor este bine poziționat și vizibil pe toate dispozitivele
     ctx.fillStyle = 'black';
-    ctx.font = '20px Arial';
+    ctx.font = `${Math.max(16, Math.min(canvas.width / 25, 24))}px Arial`; // Scorul se ajustează proporțional cu dimensiunea ecranului
     ctx.textAlign = 'left'; // Poziționează textul la stânga
-    ctx.fillText('Score: ' + score, 10, 30); // Ajustează poziția dacă este necesar
+    ctx.fillText('Score: ' + score, 20, 40); // Ajustează poziția și marginea scorului
 }
 
 // Controlul jucătorului
@@ -122,14 +124,33 @@ document.addEventListener('keydown', (event) => {
 });
 
 // Control pentru butoanele pe mobil
-leftButton.addEventListener('mousedown', () => {
-    playerX -= playerSpeed;
-    if (playerX < 0) playerX = 0;
+leftButton.addEventListener('touchstart', () => {
+    playerSpeed = boostedSpeed;
+    movePlayerLeft();
 });
 
-rightButton.addEventListener('mousedown', () => {
-    playerX += playerSpeed;
-    if (playerX + playerSize > canvas.width) playerX = canvas.width - playerSize;
+rightButton.addEventListener('touchstart', () => {
+    playerSpeed = boostedSpeed;
+    movePlayerRight();
+});
+
+// Muta jucătorul la stânga
+function movePlayerLeft() {
+    if (playerX > 0) {
+        playerX -= playerSpeed;
+    }
+}
+
+// Muta jucătorul la dreapta
+function movePlayerRight() {
+    if (playerX + playerSize < canvas.width) {
+        playerX += playerSpeed;
+    }
+}
+
+// Resetează viteza jucătorului când butonul este eliberat
+document.addEventListener('touchend', () => {
+    playerSpeed = normalSpeed; // Revine la viteza normală când butonul este eliberat pe mobil
 });
 
 // Funcția de finalizare a jocului
