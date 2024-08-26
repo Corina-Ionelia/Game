@@ -111,7 +111,7 @@ function update() {
     }
 
     // Desenează scorul
-    ctx.fillStyle = 'white';
+    ctx.fillStyle = 'black';
     ctx.font = '24px Arial';
     ctx.fillText('Score: ' + score, 10, 30);
 }
