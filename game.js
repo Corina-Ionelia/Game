@@ -1,6 +1,8 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 const restartButton = document.getElementById('restartButton');
+const leftButton = document.getElementById('leftButton');
+const rightButton = document.getElementById('rightButton');
 
 // Dimensiuni inițiale ale canvas-ului
 const initialWidth = 800;
@@ -117,6 +119,17 @@ document.addEventListener('keydown', (event) => {
         playerX += playerSpeed;
         if (playerX + playerSize > canvas.width) playerX = canvas.width - playerSize;
     }
+});
+
+// Control pentru butoanele pe mobil
+leftButton.addEventListener('mousedown', () => {
+    playerX -= playerSpeed;
+    if (playerX < 0) playerX = 0;
+});
+
+rightButton.addEventListener('mousedown', () => {
+    playerX += playerSpeed;
+    if (playerX + playerSize > canvas.width) playerX = canvas.width - playerSize;
 });
 
 // Funcția de finalizare a jocului

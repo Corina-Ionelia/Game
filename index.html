@@ -10,19 +10,19 @@
             margin: 0;
             padding: 0;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
             background-color: #f0f0f0;
             overflow: hidden;
-            /* Ascunde scroll-ul */
+            position: relative;
         }
 
         canvas {
             border: 1px solid #000;
-            background: linear-gradient(to right, lightblue, purple);
-            /* Fundal dinamic */
             display: block;
+            background-color: white;
         }
 
         #restartButton {
@@ -44,53 +44,45 @@
             background-color: #45a049;
         }
 
+        /* Butoanele pentru mobil */
+
+        .controls {
+            display: flex;
+            justify-content: space-around;
+            /* Corectează centrarea */
+            width: 100%;
+            max-width: 400px;
+            margin-top: 10px;
+            position: fixed;
+            bottom: 20px;
+            /* Plasarea la baza ecranului */
+            z-index: 10;
+            /* Asigură-te că butoanele sunt deasupra canvas-ului */
+        }
+
         .control-button {
-            position: absolute;
-            width: 80px;
-            height: 80px;
+            width: 45%;
+            padding: 15px;
+            font-size: 18px;
             background-color: #4CAF50;
             color: white;
             border: none;
-            border-radius: 50%;
+            border-radius: 5px;
             cursor: pointer;
-            font-size: 24px;
-            text-align: center;
-            line-height: 80px;
-            z-index: 1000;
-            /* Asigură-te că butoanele sunt deasupra altor elemente */
         }
 
-        #leftButton {
-            left: 20px;
-            bottom: 20px;
-        }
-
-        #rightButton {
-            right: 20px;
-            bottom: 20px;
-        }
-
-        @media (max-width: 600px) {
-
-            #leftButton,
-            #rightButton {
-                width: 60px;
-                height: 60px;
-                font-size: 18px;
-            }
-
-            #restartButton {
-                padding: 8px 16px;
-                font-size: 14px;
-            }
+        .control-button:hover {
+            background-color: #45a049;
         }
     </style>
 </head>
 
 <body>
     <canvas id="gameCanvas"></canvas>
-    <button id="leftButton" class="control-button">←</button>
-    <button id="rightButton" class="control-button">→</button>
+    <div class="controls">
+        <button id="leftButton" class="control-button">Left</button>
+        <button id="rightButton" class="control-button">Right</button>
+    </div>
     <button id="restartButton">Restart Game</button>
     <script src="game.js"></script>
 </body>
