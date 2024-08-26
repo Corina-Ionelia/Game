@@ -3,6 +3,10 @@ const ctx = canvas.getContext('2d');
 const restartButton = document.getElementById('restartButton');
 const leftButton = document.getElementById('leftButton');
 const rightButton = document.getElementById('rightButton');
+// Încărcarea imaginii pentru fundalul de Game Over
+const gameOverImage = new Image();
+gameOverImage.src = 'img/gameover.jpg'; // Imaginea pentru fundalul de Game Over
+
 
 // Dimensiuni inițiale ale canvas-ului
 const initialWidth = 800;
@@ -121,7 +125,26 @@ function gameOver() {
     clearInterval(gameInterval);
     gameOverFlag = true;
     restartButton.style.display = 'block'; // Afișează butonul de restart
+
+    // Desenează fundalul de Game Over
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(gameOverImage, 0, 0, canvas.width, canvas.height); // Desenează imaginea pentru întregul canvas
+
+    // Opțional: Desenează textul de Game Over peste imagine
+    ctx.fillStyle = 'white';
+    ctx.font = '48px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText('Game Over', canvas.width / 2, canvas.height / 2 - 20);
+    ctx.font = '24px Arial';
+    ctx.fillText('Score: ' + score, canvas.width / 2, canvas.height / 2 + 30);
+
 }
+
+// Așteaptă ca imaginea să fie încărcată înainte de a începe jocul
+gameOverImage.onload = () => {
+    initGame();
+    gameInterval = setInterval(update, 1000 / 60); // Repornește actualizarea jocului
+};
 
 // Mișcare jucător la apăsarea butoanelor
 function movePlayer(direction) {
